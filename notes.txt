@@ -1,0 +1,11 @@
+GaussBlur:
+- int tot; could be added to #define, saves 2*GB loop
+Loops:
+1. tmp[x][y] = 0 
+	-> NxM
+2. tmp[x][y] += image_in[x+k][y] * Gauss[abs(k)];
+	-> (N-1-GB) x (M-1-GB)
+3. image_out[x][y] = 0
+	-> NxM
+4. image_out[x][y] += tmp[x][y+k] * Gauss[abs(k)];
+	-> (N-1-GB) x (M-1-GB)
