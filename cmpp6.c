@@ -13,7 +13,7 @@ unsigned char *ref_im, *out_im;
 char equal = 1;
 int nrdiff=0, nrdiff1=0, nrdiff2=0, nrdiff3=0;
 
-if ((fp = fopen("ref.ppm", "rb")) != NULL) {
+if ((fp = fopen("ref.pgm", "rb")) != NULL) {
    fscanf (fp, "%c%c%d%d%d", &c1, &c2, &width, &height, &maxval);
    ref_im = (unsigned char*) malloc(sizeof(unsigned char)*width*height*3);
    fread(ref_im, sizeof(unsigned char), width*height*3, fp);
@@ -24,7 +24,7 @@ printf("%c%c\n",c1,c2);
 printf("%d %d\n", width, height);
 printf("%d\n", maxval);
 
-if ((fp = fopen("out.ppm", "rb")) != NULL) {
+if ((fp = fopen("test.out.pgm", "rb")) != NULL) {
    fscanf (fp, "%c%c%d%d%d", &c1, &c2, &width, &height, &maxval);
    out_im = (unsigned char*) malloc(sizeof(unsigned char)*width*height*3);
    fread(out_im, sizeof(unsigned char), width*height*3, fp);
