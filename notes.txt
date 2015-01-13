@@ -1,14 +1,24 @@
-GaussBlur:
+1. GaussBlur:
 - int tot; could be added to #define, saves 2*GB loop
 Loops:
 1. tmp[x][y] = 0 
-	-> NxM
+	-> length NxM
 2. tmp[x][y] += image_in[x+k][y] * Gauss[abs(k)];
-	-> (N-1-GB)*(M-1-GB)
+	-> length (N-1-GB)*(M-1-GB)*((2*GB)-1)
 3. image_out[x][y] = 0
-	-> N*M
+	-> length N*M
 4. image_out[x][y] += tmp[x][y+k] * Gauss[abs(k)];
-	-> (N-1-GB)*(M-1-GB)
+	-> length (N-1-GB)*(M-1-GB)*((2*GB)-1)
 
-1+2+3+4 Can be merged into one loop, saves (2*(N-1-GB)*(M-1-GB) + N*M) iterations
+1+3 are similar and can be merged, saves N*M iterations
+1+2, 3+4 Can be merged into two loops, saves 2*(N-1-GB)*(M-1-GB)*(2*GB)+N*M iterations if all 4 loops are combined
+tmp[] can then be made smaller
+
+---
+ComputeEdges:
+
+1. image_out[x][y]=0;
+	-> N*M
+2. maxdiff
+	-> (1-NB)*(N*M), inner loops (2*N*B)*(2*N*B)
 
