@@ -284,4 +284,6 @@ int main(int argc, char* argv[])
   printf("  Elapsed time (without disk reading & writing) is %f s\n",
     1.0*(endtime-starttime) / CLOCKS_PER_SEC);
   //getchar();
+  
+  return 0;
 }
