@@ -4,8 +4,11 @@ Loops:
 1. tmp[x][y] = 0 
 	-> NxM
 2. tmp[x][y] += image_in[x+k][y] * Gauss[abs(k)];
-	-> (N-1-GB) x (M-1-GB)
+	-> (N-1-GB)*(M-1-GB)
 3. image_out[x][y] = 0
-	-> NxM
+	-> N*M
 4. image_out[x][y] += tmp[x][y+k] * Gauss[abs(k)];
-	-> (N-1-GB) x (M-1-GB)
+	-> (N-1-GB)*(M-1-GB)
+
+1+2+3+4 Can be merged into one loop, saves (2*(N-1-GB)*(M-1-GB) + N*M) iterations
+
