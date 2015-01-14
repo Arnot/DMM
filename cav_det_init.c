@@ -192,23 +192,22 @@ void GaussBlur (int image_in[N][M], int image_out[N][M])
 		}
 }
 
-
 void ComputeEdges (int image_in[N][M], int image_out[N][M])
 {
 	int maxdiff,val;
 	int x,y,x_offset,y_offset;
-
-	for (x=0; x<N; ++x) for (y=0; y<M; ++y) image_out[x][y]=0;
 
 	for (x=NB; x< N-NB; ++x)
 		for (y=NB; y<M-NB; ++y)
 		{
 			maxdiff = 0;
 
-			for (x_offset=-NB; x_offset <= NB; x_offset++)
-				for (y_offset=-NB; y_offset <= NB; y_offset++)
-					if ((val = abs(image_in[x+x_offset][y+y_offset]-image_in[x][y]))> maxdiff && !(x_offset == 0 && y_offset == 0))
-						maxdiff = val;
+			if(x >= NB && x < N-NB && y >= NB && y < M-NB) {
+				for (x_offset=-NB; x_offset <= NB; x_offset++)
+					for (y_offset=-NB; y_offset <= NB; y_offset++)
+						if ((val = abs(image_in[x+x_offset][y+y_offset]-image_in[x][y]))> maxdiff && !(x_offset == 0 && y_offset == 0))
+							maxdiff = val;
+			}
 
 			image_out[x][y] = maxdiff;
 		}
