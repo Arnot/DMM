@@ -1,9 +1,12 @@
 Original:
   Elapsed time (without disk reading & writing) is 55.110019 s
-
+  Elapsed time (without disk reading & writing) is 54.748857 s
+  Elapsed time (without disk reading & writing) is 55.858920 s
+  Elapsed time (without disk reading & writing) is 55.567469 s
+  Elapsed time (without disk reading & writing) is 54.937834 s
 ---
 
-1. GaussBlur:
+GaussBlur:
 - int tot; could be added to #define, saves 2*GB loop
 Loops:
 1. tmp[x][y] = 0 
