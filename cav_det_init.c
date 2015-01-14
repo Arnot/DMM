@@ -172,27 +172,22 @@ void GaussBlur (int image_in[N][M], int image_out[N][M])
 	int tot=0;
 	for (k=-GB; k<=GB; ++k) tot+=Gauss[abs(k)];
 
-	for (x=0; x<=N; ++x)
-		for (y=0; y<=M; ++y) {
-			if (x < GB || x > N-1-GB || y < GB || y > N-1-GB) {
-				tmp[x][y] = 0;
-			} else {
+	for (y=0; y<=M; ++y) 
+		for (x=0; x<=N; ++x){
+			if (x >= GB && x <= N-1-GB && y >= GB && y <= M-1-GB) {
 				for (k=-GB; k<=GB; ++k) {
 					tmp[x][y] += image_in[x+k][y] * Gauss[abs(k)];
 				}
 				tmp[x][y] /= tot;
-			}
-		}
-
-	for (x=0; x<=N; ++x)
-		for (y=0; y<=M; ++y) {
-			if (x < GB || x > N-1-GB || y < GB || y > N-1-GB) {
-				image_out[x][y] = 0;
 			} else {
+				tmp[x][y] = 0;
+				image_out[x][y] = 0;
+			}
+			if (y >= 2*GB && x >= GB && y <= M-1 && x <= N-1-GB) {
 				for (k=-GB; k<=GB; ++k) {
-					image_out[x][y] += tmp[x][y+k] * Gauss[abs(k)];
+					image_out[x][y-GB] += tmp[x][y-GB+k] * Gauss[abs(k)];
 				}
-				image_out[x][y] /= tot;
+				image_out[x][y-GB] /= tot;
 			}
 		}
 }
