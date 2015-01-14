@@ -172,20 +172,16 @@ void GaussBlur (int image_in[N][M], int image_out[N][M])
   int tot=0;
   for (k=-GB; k<=GB; ++k) tot+=Gauss[abs(k)];
 
-  for (x=0; x<N; ++x) {
-    for (y=0; y<M; ++y) {
-      tmp[x][y]=0;
-      image_out[x][y]=0;
-    }
-  }
+  for (x=0; x<N; ++x) for (y=0; y<M; ++y) tmp[x][y]=0;
 
   for (x=GB; x<=N-1-GB; ++x)
     for (y=GB; y<=M-1-GB; ++y) {
-      for (k=-GB; k<=GB; ++k) {
+      for (k=-GB; k<=GB; ++k)
         tmp[x][y] += image_in[x+k][y] * Gauss[abs(k)];
-      }
       tmp[x][y] /= tot;
     }
+
+  for (x=0; x<N; ++x) for (y=0; y<M; ++y) image_out[x][y]=0;
 
   for (x=GB; x<=N-1-GB; ++x)
     for (y=GB; y<=M-1-GB; ++y) {
