@@ -192,13 +192,14 @@ void GaussBlur (int image_in[N][M], int image_out[N][M])
 		}
 }
 
-void ComputeEdges (int image_in[N][M], int image_out[N][M])
+int ComputeEdges (int image_in[N][M], int image_out[N][M])
 {
 	int maxdiff,val;
 	int x,y,x_offset,y_offset;
+	int max=0;
 
-	for (x=NB; x< N-NB; ++x)
-		for (y=NB; y<M-NB; ++y)
+	for (x=0; x< N; ++x)
+		for (y=0; y<M; ++y)
 		{
 			maxdiff = 0;
 
@@ -210,26 +211,16 @@ void ComputeEdges (int image_in[N][M], int image_out[N][M])
 			}
 
 			image_out[x][y] = maxdiff;
+			if (maxdiff > max) max = maxdiff;
 		}
-}
 
-
-int maxval (int image[N][M])
-{
-	int max=0;
-	int x,y;
-
-	for (x=0; x<N; ++x)
-		for (y=0; y<M; ++y)
-			if (image[x][y]>max) max=image[x][y];
 	return max;
 }
 
 
-void Reverse (int image_in[N][M], int image_out[N][M])
+void Reverse (int image_in[N][M], int image_out[N][M], int max)
 {
 	int x,y;
-	int max=maxval(image_in);
 
 	for (x=0; x<N; ++x)
 		for (y=0; y<M; ++y)
@@ -237,12 +228,12 @@ void Reverse (int image_in[N][M], int image_out[N][M])
 }
 
 
-void DetectRoots (int image_in[N][M], int image_out[N][M])
+void DetectRoots (int image_in[N][M], int image_out[N][M], int max)
 {
 	int x,y,k,x_offset,y_offset;
 	static int tmp[N][M];
 
-	Reverse(image_in,tmp);
+	Reverse(image_in,tmp, max);
 
 	for (x=0; x<N; ++x) for (y=0; y<M; ++y) image_out[x][y]=0;
 
@@ -265,6 +256,7 @@ int main(int argc, char* argv[])
 	static int c_image[N][M];
 	static int out_image[N][M];
 	clock_t starttime, endtime;
+	int max;
 
 	printf("  Reading image from disk (%s)...\n",IN_NAME);
 	read_image(IN_NAME,in_image);
@@ -272,8 +264,8 @@ int main(int argc, char* argv[])
 	printf("  Computing (GB=%d)...\n",GB);
 	starttime=clock();
 	GaussBlur(in_image, g_image);
-	ComputeEdges(g_image, c_image);
-	DetectRoots(c_image, out_image);
+	max = ComputeEdges(g_image, c_image);
+	DetectRoots(c_image, out_image, max);
 	endtime=clock();
 
 	printf("  Writing results to disk (%s)...\n",OUT_NAME);
