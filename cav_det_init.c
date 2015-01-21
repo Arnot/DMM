@@ -199,8 +199,7 @@ int ComputeEdges (int image_in[N][M], int image_out[N][M])
 	int max=0;
 
 	for (x=0; x< N; ++x)
-		for (y=0; y<M; ++y)
-		{
+		for (y=0; y<M; ++y) {
 			maxdiff = 0;
 
 			if(x >= NB && x < N-NB && y >= NB && y < M-NB) {
@@ -225,11 +224,12 @@ void DetectRoots (int image_in[N][M], int image_out[N][M], int max)
 	for (x=0; x<N; ++x) {
 		for (y=0; y<M; ++y) {
 			image_out[x][y]=0;
-			if (x >= NB && x <= N-1-NB && y >= NB && y <= M-1-NB){
+
+			if (x >= NB && x <= N-1-NB && y >= NB && y <= M-1-NB) {
 				image_out[x][y] = 255;
 				for (x_offset=-NB; x_offset <= NB; x_offset++) {
 					for (y_offset=-NB; y_offset <= NB; y_offset++) {
-						if ((max - image_in[x+x_offset][y+y_offset]) > (max - image_in[x][y]) && !(x_offset == 0 && y_offset == 0))
+						if ((image_in[x+x_offset][y+y_offset]) < (image_in[x][y]) && !(x_offset == 0 && y_offset == 0))
 							image_out[x][y] = 0;
 					}
 				}
