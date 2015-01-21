@@ -217,34 +217,25 @@ int ComputeEdges (int image_in[N][M], int image_out[N][M])
 	return max;
 }
 
-
-void Reverse (int image_in[N][M], int image_out[N][M], int max)
-{
-	int x,y;
-
-	for (x=0; x<N; ++x)
-		for (y=0; y<M; ++y)
-			image_out[x][y] = max - image_in[x][y];
-}
-
-
 void DetectRoots (int image_in[N][M], int image_out[N][M], int max)
 {
 	int x,y,k,x_offset,y_offset;
 	static int tmp[N][M];
 
-	Reverse(image_in,tmp, max);
-
-	for (x=0; x<N; ++x) for (y=0; y<M; ++y) image_out[x][y]=0;
-
-	for (x=NB; x<=N-1-NB; ++x)
-		for (y=NB; y<=M-1-NB; ++y) {
-			image_out[x][y] = 255;
-			for (x_offset=-NB; x_offset <= NB; x_offset++)
-				for (y_offset=-NB; y_offset <= NB; y_offset++)
-					if (tmp[x+x_offset][y+y_offset] > tmp[x][y] && !(x_offset == 0 && y_offset == 0))
-						image_out[x][y] = 0;
+	for (x=0; x<N; ++x) {
+		for (y=0; y<M; ++y) {
+			image_out[x][y]=0;
+			if (x >= NB && x <= N-1-NB && y >= NB && y <= M-1-NB){
+				image_out[x][y] = 255;
+				for (x_offset=-NB; x_offset <= NB; x_offset++) {
+					for (y_offset=-NB; y_offset <= NB; y_offset++) {
+						if ((max - image_in[x+x_offset][y+y_offset]) > (max - image_in[x][y]) && !(x_offset == 0 && y_offset == 0))
+							image_out[x][y] = 0;
+					}
+				}
+			}
 		}
+	}
 }
 
 
