@@ -191,7 +191,7 @@ void GaussBlur (int image_in[N][M], int image_out[N][M])
 				/* 	} */
 				/* 	image_out[x][y-GB] /= tot; */
 				/* }  */
-c			}
+			}
 
 		}
 }
