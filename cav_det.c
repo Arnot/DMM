@@ -162,15 +162,13 @@ void write_image(char* filename, int image[N][M])
 	fclose(foutput);
 }
 
-
-
 void GaussBlur (int image_in[N][M], int image_out[N][M])
 {
 	static int tmp[N][M];
 	int x,y,k;
 
 	int tot=0;
-	for (k=-GB; k<=GB; ++k) tot+=Gauss[abs(k)];
+	For (k=-GB; k<=GB; ++k) tot+=Gauss[abs(k)];
 
 	for (y=0; y<M; ++y) 
 		for (x=0; x<N; ++x){
@@ -179,15 +177,21 @@ void GaussBlur (int image_in[N][M], int image_out[N][M])
 			if (x >= GB && x <= N-1-GB && y >= GB && y <= M-1-GB) {
 				for (k=-GB; k<=GB; ++k) {
 					tmp[x][y] += image_in[x+k][y] * Gauss[abs(k)];
+                                        if (y >= 2*GB && y-GB >= GB && y-GB <= M-1-GB) {
+						image_out[x][y-GB] += tmp[x][y-GB+k] * Gauss[abs(k)];
+                                        }
 				}
 				tmp[x][y] /= tot;
-				if (y >= 2*GB && y-GB >= GB && y-GB <= M-1-GB) {
-					for (k=-GB; k<=GB; ++k) {
-						image_out[x][y-GB] += tmp[x][y-GB+k] * Gauss[abs(k)];
-					}
+                                if (y >= 2*GB && y-GB >= GB && y-GB <= M-1-GB) {
 					image_out[x][y-GB] /= tot;
-				} 
-			}
+                                }
+				/* if (y >= 2*GB && y-GB >= GB && y-GB <= M-1-GB) { */
+				/* 	for (k=-GB; k<=GB; ++k) { */
+				/* 		image_out[x][y-GB] += tmp[x][y-GB+k] * Gauss[abs(k)]; */
+				/* 	} */
+				/* 	image_out[x][y-GB] /= tot; */
+				/* }  */
+c			}
 
 		}
 }
@@ -205,7 +209,7 @@ int ComputeEdges (int image_in[N][M], int image_out[N][M])
 			if(x >= NB && x < N-NB && y >= NB && y < M-NB) {
 				for (x_offset=-NB; x_offset <= NB; x_offset++)
 					for (y_offset=-NB; y_offset <= NB; y_offset++)
-						if ((val = abs(image_in[x+x_offset][y+y_offset]-image_in[x][y]))> maxdiff && !(x_offset == 0 && y_offset == 0))
+						if ((val = abs(image_in[x+x_offset][y+y_offset]-image_in[x][y])) > maxdiff && !(x_offset == 0 && y_offset == 0))
 							maxdiff = val;
 			}
 
@@ -237,8 +241,6 @@ void DetectRoots (int image_in[N][M], int image_out[N][M], int max)
 		}
 	}
 }
-
-
 
 int main(int argc, char* argv[])
 {
