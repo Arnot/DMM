@@ -168,7 +168,7 @@ void GaussBlur (int image_in[N][M], int image_out[N][M])
 	int x,y,k;
 
 	int tot=0;
-	For (k=-GB; k<=GB; ++k) tot+=Gauss[abs(k)];
+	for (k=-GB; k<=GB; ++k) tot+=Gauss[abs(k)];
 
 	for (y=0; y<M; ++y) 
 		for (x=0; x<N; ++x){
