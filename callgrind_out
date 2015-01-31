@@ -1,0 +1,325 @@
+Reading data from 'callgrind.out.920'...
+--------------------------------------------------------------------------------
+Profile data file 'callgrind.out.920' (creator: callgrind-3.10.0)
+--------------------------------------------------------------------------------
+I1 cache: 32768 B, 64 B, 4-way associative
+D1 cache: 32768 B, 64 B, 8-way associative
+LL cache: 3145728 B, 64 B, 12-way associative
+Timerange: Basic block 0 - 23626834005
+Trigger: Program termination
+Profiled target:  ./cavdet (PID 920, part 1)
+Events recorded:  Ir Dr Dw I1mr D1mr D1mw ILmr DLmr DLmw
+Events shown:     Ir Dr Dw I1mr D1mr D1mw ILmr DLmr DLmw
+Event sort order: Ir Dr Dw I1mr D1mr D1mw ILmr DLmr DLmw
+Thresholds:       99 0 0 0 0 0 0 0 0
+Include dirs:     
+User annotated:   
+Auto-annotation:  on
+
+--------------------------------------------------------------------------------
+             Ir              Dr             Dw  I1mr       D1mr       D1mw  ILmr      DLmr      DLmw 
+--------------------------------------------------------------------------------
+319,486,230,504 131,997,416,795 23,522,835,104 1,415 49,150,146 14,515,757 1,393 1,140,378 1,437,131  PROGRAM TOTALS
+
+--------------------------------------------------------------------------------
+             Ir             Dr             Dw I1mr       D1mr      D1mw ILmr    DLmr    DLmw  file:function
+--------------------------------------------------------------------------------
+156,744,642,308 63,569,866,480 14,921,390,480    6  9,339,264   287,296    6 286,666 287,296  cav_det.c:ComputeEdges [/home/arno/TUe/dmm/cavdet]
+135,208,626,931 58,828,443,953  6,423,001,723    5  9,339,264   287,296    5 287,296 287,296  cav_det.c:DetectRoots [/home/arno/TUe/dmm/cavdet]
+ 21,558,153,594  8,217,399,752  1,147,178,312   11 25,758,726 9,193,472   11 278,723 574,592  cav_det.c:GaussBlur [/home/arno/TUe/dmm/cavdet]
+  1,854,093,201    424,571,003    299,559,650   72    100,701         4   72      72       .  /build/buildd/glibc-2.19/stdio-common/vfscanf.c:_IO_vfscanf [/lib/x86_64-linux-gnu/libc-2.19.so]
+  1,511,034,885    446,355,883    325,250,183   83         35        21   83      31      15  /build/buildd/glibc-2.19/stdio-common/vfprintf.c:vfprintf [/lib/x86_64-linux-gnu/libc-2.19.so]
+
+--------------------------------------------------------------------------------
+-- Auto-annotated source: cav_det.c
+--------------------------------------------------------------------------------
+             Ir             Dr            Dw I1mr       D1mr      D1mw ILmr    DLmr    DLmw 
+
+-- line 35 ----------------------------------------
+              .              .             .    .          .         .    .       .       .  #elif GB==64
+              .              .             .    .          .         .    .       .       .  int Gauss[]={99,99,99,99,98,98,97,96,95,94,92,91,89,88,86,84,82,80,78,76,73,71,69,67,64,62,60,57,55,53,50,48,46,44,41,39,37,35,33,32,30,28,26,25,23,22,20,19,18,16,15,14,13,12,11,10,10,9,8,7,7,6,6,5,5};
+              .              .             .    .          .         .    .       .       .  #else
+              .              .             .    .          .         .    .       .       .  #error Dit mag niet!
+              .              .             .    .          .         .    .       .       .  #endif
+              .              .             .    .          .         .    .       .       .  
+              .              .             .    .          .         .    .       .       .  
+              .              .             .    .          .         .    .       .       .  int getint(FILE *fp) /* adapted from "xv" source code */
+             21              3             9    1          0         0    1       .       .  {
+              .              .             .    .          .         .    .       .       .  	int c, i, firstchar, garbage;
+              .              .             .    .          .         .    .       .       .  
+              .              .             .    .          .         .    .       .       .  	/* note:  if it sees a '#' character, all characters from there to end of
+              .              .             .    .          .         .    .       .       .  	   line are appended to the comment string */
+              .              .             .    .          .         .    .       .       .  
+              .              .             .    .          .         .    .       .       .  	/* skip forward to start of next number */
+             19              8             8    .          .         .    .       .       .  	c = getc(fp);
+            111             45            24    4          0         0    4       .       .  => /build/buildd/glibc-2.19/libio/getc.c:getc (3x)
+            797            249           101    0          7         1    0       2       .  => /build/buildd/glibc-2.19/elf/../sysdeps/x86_64/dl-trampoline.S:_dl_runtime_resolve (1x)
+              .              .             .    .          .         .    .       .       .  	while (1) {
+              .              .             .    .          .         .    .       .       .  		/* eat comments */
+             10              5             .    .          .         .    .       .       .  		if (c=='#') {
+              .              .             .    .          .         .    .       .       .  			/* if we're at a comment, read to end of line */
+              .              .             .    .          .         .    .       .       .  			char cmt[256], *sp;
+              .              .             .    .          .         .    .       .       .  
+              3              0             2    1          0         0    1       .       .  			sp = cmt;  firstchar = 1;
+              .              .             .    .          .         .    .       .       .  			while (1) {
+            190             76            76    .          .         .    .       .       .  				c=getc(fp);
+          1,406            570           304    .          .         .    .       .       .  => /build/buildd/glibc-2.19/libio/getc.c:getc (38x)
+             80             39             1    .          .         .    .       .       .  				if (firstchar && c == ' ') firstchar = 0;  /* lop off 1 sp after # */
+              .              .             .    .          .         .    .       .       .  				else {
+            146             73             .    .          .         .    .       .       .  					if (c == '\n' || c == EOF) break;
+            396            108            72    .          .         .    .       .       .  					if ((sp-cmt)<250) *sp++ = c;
+              .              .             .    .          .         .    .       .       .  				}
+             37              0             0    1          0         0    1       .       .  			}
+              4              1             2    .          .         .    .       .       .  			*sp++ = '\n';
+              2              1             1    .          .         .    .       .       .  			*sp   = '\0';
+              .              .             .    .          .         .    .       .       .  		}
+              .              .             .    .          .         .    .       .       .  
+             10              5             0    1          0         0    1       .       .  		if (c==EOF) return 0;
+             19              8             .    .          .         .    .       .       .  		if (c>='0' && c<='9') break;   /* we've found what we were looking for */
+              .              .             .    .          .         .    .       .       .  
+              .              .             .    .          .         .    .       .       .  		/* see if we are getting garbage (non-whitespace) */
+             16              8             0    1          0         0    1       .       .  		if (c!=' ' && c!='\t' && c!='\r' && c!='\n' && c!=',') garbage=1;
+              .              .             .    .          .         .    .       .       .  
+             10              4             4    1          0         0    1       .       .  		c = getc(fp);
+             74             30            16    .          .         .    .       .       .  => /build/buildd/glibc-2.19/libio/getc.c:getc (2x)
+              2              .             .    .          .         .    .       .       .  	}
+              .              .             .    .          .         .    .       .       .  
+              .              .             .    .          .         .    .       .       .  	/* we're at the start of a number, continue until we hit a non-number */
+              6              0             3    .          .         .    .       .       .  	i = 0;
+              .              .             .    .          .         .    .       .       .  	while (1) {
+            110             22            11    1          0         0    1       .       .  		i = (i*10) + (c - '0');
+             55             22            22    .          .         .    .       .       .  		c = getc(fp);
+            407            165            88    .          .         .    .       .       .  => /build/buildd/glibc-2.19/libio/getc.c:getc (11x)
+             22             11             .    .          .         .    .       .       .  		if (c==EOF) return i;
+             38             19             .    .          .         .    .       .       .  		if (c<'0' || c>'9') break;
+              8              .             .    .          .         .    .       .       .  	}
+              3              3             .    .          .         .    .       .       .  	return i;
+             15             12             .    .          .         .    .       .       .  }
+              .              .             .    .          .         .    .       .       .  
+              .              .             .    .          .         .    .       .       .  
+              .              .             .    .          .         .    .       .       .  void openfile(char *filename, FILE** finput)
+              8              1             4    1          0         0    1       .       .  {
+              .              .             .    .          .         .    .       .       .  	int x0, y0;
+              .              .             .    .          .         .    .       .       .  	char header[255];
+              .              .             .    .          .         .    .       .       .  
+             16              7             4    1          1         1    1       .       .  	if ((*finput=fopen(filename,"rb"))==NULL) {
+            752            240           101    0          6         0    0       5       .  => /build/buildd/glibc-2.19/elf/../sysdeps/x86_64/dl-trampoline.S:_dl_runtime_resolve (1x)
+         59,910         14,537           661  111      1,109        47  110     864      40  => /build/buildd/glibc-2.19/libio/iofopen.c:fopen@@GLIBC_2.2.5 (1x)
+              .              .             .    .          .         .    .       .       .  		fprintf(stderr,"Unable to open file %s for reading\n",filename);
+              .              .             .    .          .         .    .       .       .  		exit(-1);
+              .              .             .    .          .         .    .       .       .  	}
+              .              .             .    .          .         .    .       .       .  
+             12              5             3    1          1         0    1       .       .  	fscanf(*finput,"%s",header);
+            904            268           101    0         48         7    0       3       .  => /build/buildd/glibc-2.19/elf/../sysdeps/x86_64/dl-trampoline.S:_dl_runtime_resolve (1x)
+            630            176           124   70         15         6   65       7       .  => /build/buildd/glibc-2.19/stdio-common/isoc99_fscanf.c:__isoc99_fscanf (1x)
+             11              3             3    2          1         0    2       .       .  	if (strcmp(header,"P2")!=0) {
+            784            247           102    3          9         0    3       1       .  => /build/buildd/glibc-2.19/elf/../sysdeps/x86_64/dl-trampoline.S:_dl_runtime_resolve (1x)
+             21              5             0    2          1         0    2       1       .  => /build/buildd/glibc-2.19/string/../sysdeps/x86_64/multiarch/strcmp-sse2-unaligned.S:__strcmp_sse2_unaligned (1x)
+              .              .             .    .          .         .    .       .       .  		fprintf(stderr,"\nFile %s is not a valid ascii .pgm file (type P2)\n",
+              .              .             .    .          .         .    .       .       .  				filename);
+              .              .             .    .          .         .    .       .       .  		exit(-1);
+              .              .             .    .          .         .    .       .       .  	}
+              .              .             .    .          .         .    .       .       .  
+              5              2             2    1          0         0    1       .       .  	x0=getint(*finput);
+          3,478          1,281           639   11          7         1   11       2       .  => cav_det.c:getint (1x)
+              5              2             2    .          .         .    .       .       .  	y0=getint(*finput);
+            299            114            58    .          .         .    .       .       .  => cav_det.c:getint (1x)
+              .              .             .    .          .         .    .       .       .  
+              4              2             0    1          0         0    1       .       .  	if ((x0!=N) || (y0!=M)) {
+              .              .             .    .          .         .    .       .       .  		fprintf(stderr,"Image dimensions do not match: %ix%i expected\n", N, M);
+              .              .             .    .          .         .    .       .       .  		exit(-1);
+              .              .             .    .          .         .    .       .       .  	}
+              .              .             .    .          .         .    .       .       .  
+              4              2             1    .          .         .    .       .       .  	getint(*finput); /* read and throw away the range info */
+            240             92            47    .          .         .    .       .       .  => cav_det.c:getint (1x)
+              5              4             0    0          1         .    .       .       .  }
+              .              .             .    .          .         .    .       .       .  
+              .              .             .    .          .         .    .       .       .  
+              .              .             .    .          .         .    .       .       .  void read_image(char* filename, int image[N][M])
+              8              1             4    1          0         0    1       .       .  {
+              .              .             .    .          .         .    .       .       .  	long int inint;
+              .              .             .    .          .         .    .       .       .  	FILE* finput;
+              .              .             .    .          .         .    .       .       .  	int i,j;
+              .              .             .    .          .         .    .       .       .  
+              1              0             1    1          0         0    1       .       .  	finput=NULL;
+              5              1             1    .          .         .    .       .       .  	openfile(filename,&finput);
+         67,088         16,988         1,852  204      1,199        62  198     883      40  => cav_det.c:openfile (1x)
+          6,436          2,145         2,145    1          0         0    1       .       .  	for (j=0; j<M; ++j)
+     13,798,784      4,598,880     4,598,880    .          .         .    .       .       .  		for (i=0; i<N; ++i) {
+     41,370,624      9,193,472     4,596,736    1          0         0    1       .       .  			if (fscanf(finput, "%li", &inint)==EOF) {
+  2,780,967,749    611,852,624   460,509,334   43    106,995       626   43      68       .  => /build/buildd/glibc-2.19/stdio-common/isoc99_fscanf.c:__isoc99_fscanf (4596736x)
+              .              .             .    .          .         .    .       .       .  				fprintf(stderr,"Premature EOF\n");
+              .              .             .    .          .         .    .       .       .  				exit(-1);
+              .              .             .    .          .         .    .       .       .  			} else {
+     45,967,360     18,386,944     4,596,736    0          0 4,596,736    0       0 287,296  				image[i][j]= (int) inint;
+              .              .             .    .          .         .    .       .       .  			}
+              .              .             .    .          .         .    .       .       .  		}
+              8              4             3    .          .         .    .       .       .  	fclose(finput);
+            791            246           101    0         49         6    0      49       6  => /build/buildd/glibc-2.19/elf/../sysdeps/x86_64/dl-trampoline.S:_dl_runtime_resolve (1x)
+          1,161            354           188   51         32         1   51      31       1  => /build/buildd/glibc-2.19/libio/iofclose.c:fclose@@GLIBC_2.2.5 (1x)
+              5              4             0    1          0         0    1       .       .  }
+              .              .             .    .          .         .    .       .       .  
+              .              .             .    .          .         .    .       .       .  
+              .              .             .    .          .         .    .       .       .  void write_image(char* filename, int image[N][M])
+              5              0             3    .          .         .    .       .       .  {
+              .              .             .    .          .         .    .       .       .  	FILE* foutput;
+              .              .             .    .          .         .    .       .       .  	int i,j;
+              .              .             .    .          .         .    .       .       .  
+              8              3             2    1          1         0    1       1       .  	if ((foutput=fopen(filename,"wb"))==NULL) {
+            503             94           126   21         16         8   21      16       8  => /build/buildd/glibc-2.19/libio/iofopen.c:fopen@@GLIBC_2.2.5 (1x)
+              .              .             .    .          .         .    .       .       .  		fprintf(stderr,"Unable to open file %s for writing\n",filename);
+              .              .             .    .          .         .    .       .       .  		exit(-1);
+              .              .             .    .          .         .    .       .       .  	}
+              .              .             .    .          .         .    .       .       .  
+             11              4             3    2          1         0    2       1       .  	fprintf(foutput,"P2\n");
+            774            245           101    0         50         8    0      50       8  => /build/buildd/glibc-2.19/elf/../sysdeps/x86_64/dl-trampoline.S:_dl_runtime_resolve (1x)
+            353             83            61   17          1         1   17       1       1  => /build/buildd/glibc-2.19/libio/iofwrite.c:fwrite (1x)
+             12              4             3    1          0         0    1       .       .  	fprintf(foutput,"%d %d\n",N,M);
+            782            246           101    0          8         0    0       8       .  => /build/buildd/glibc-2.19/elf/../sysdeps/x86_64/dl-trampoline.S:_dl_runtime_resolve (1x)
+            970            212           166    4          2         0    4       2       .  => /build/buildd/glibc-2.19/stdio-common/fprintf.c:fprintf (1x)
+              7              2             1    .          .         .    .       .       .  	fprintf(foutput,"%d\n",255);
+            563            130           106    0          1         0    0       1       .  => /build/buildd/glibc-2.19/stdio-common/fprintf.c:fprintf (1x)
+              .              .             .    .          .         .    .       .       .  
+          6,436          2,145         2,145    2          0         0    2       .       .  	for (j=0; j<M; ++j) {
+     13,798,784      4,598,880     4,598,880    .          .         .    .       .       .  		for (i=0; i<N; ++i) {
+     64,354,304     27,580,416     4,596,736    0  4,596,736         0    0 285,311       .  			fprintf(foutput,"%3d ",image[i][j]);
+  2,971,250,279    698,547,101   546,308,180   12      6,330   148,467   12       3      65  => /build/buildd/glibc-2.19/stdio-common/fprintf.c:fprintf (4596736x)
+     37,492,132      4,884,034       143,650    .          .         .    .       .       .  			if (i%32==31) fprintf(foutput,"\n");
+            776            243           101    0          8         0    0       8       .  => /build/buildd/glibc-2.19/elf/../sysdeps/x86_64/dl-trampoline.S:_dl_runtime_resolve (1x)
+      5,607,312      2,012,437     1,293,567    8         32     1,209    8       .       .  => /build/buildd/glibc-2.19/libio/fputc.c:fputc (143648x)
+              .              .             .    .          .         .    .       .       .  		}
+              .              .             .    .          .         .    .       .       .  		if (N%32!=0) fprintf(foutput,"\n");
+              .              .             .    .          .         .    .       .       .  	}
+              4              2             1    0          1         0    0       1       .  	fclose(foutput);
+            661            190           119   16         16         3   16      16       1  => /build/buildd/glibc-2.19/libio/iofclose.c:fclose@@GLIBC_2.2.5 (1x)
+              2              2             .    .          .         .    .       .       .  }
+              .              .             .    .          .         .    .       .       .  
+              .              .             .    .          .         .    .       .       .  void GaussBlur (int image_in[N][M], int image_out[N][M])
+              4              0             3    1          0         0    1       .       .  {
+              .              .             .    .          .         .    .       .       .  	static int tmp[N][M];
+              .              .             .    .          .         .    .       .       .  	int x,y,k;
+              .              .             .    .          .         .    .       .       .  
+              1              0             1    .          .         .    .       .       .  	int tot=0;
+            719            261           131    1          3         0    1       3       .  	for (k=-GB; k<=GB; ++k) tot+=Gauss[abs(k)];
+              .              .             .    .          .         .    .       .       .  
+          6,436          2,145         2,145    1          0         0    1       .       .  	for (y=0; y<M; ++y) 
+     13,798,784      4,598,880     4,598,880    .          .         .    .       .       .  		for (x=0; x<N; ++x){
+     32,177,152      9,193,472     4,596,736    0          0 4,596,736    0       0 287,296  			tmp[x][y] = 0;
+     36,773,888     13,790,208     4,596,736    1          0 4,596,736    1       0 287,296  			image_out[x][y] = 0;
+     35,954,688     17,977,344             0    1          0         0    1       .       .  			if (x >= GB && x <= N-1-GB && y >= GB && y <= M-1-GB) {
+    860,953,600    285,542,400   285,542,400    1          0         0    1       .       .  				for (k=-GB; k<=GB; ++k) {
+  9,280,128,000  3,655,808,000   281,216,000    1  4,459,523         0    1 278,720       .  					tmp[x][y] += image_in[x+k][y] * Gauss[abs(k)];
+              .              .             .    .          .         .    .       .       .  				}
+     73,548,800     25,958,400     4,326,400    1          0         0    1       .       .  				tmp[x][y] /= tot;
+     42,731,520     12,846,080             .    .          .         .    .       .       .  				if (y >= 2*GB && y-GB >= GB && y-GB <= M-1-GB) {
+    847,708,160    281,149,440   281,149,440    2          0         0    2       .       .  					for (k=-GB; k<=GB; ++k) {
+ 10,244,915,200  3,876,454,400   276,889,600    1 21,299,200         0    1       .       .  						image_out[x][y-GB] += tmp[x][y-GB+k] * Gauss[abs(k)];
+              .              .             .    .          .         .    .       .       .  					}
+     89,456,640     34,078,720     4,259,840    .          .         .    .       .       .  					image_out[x][y-GB] /= tot;
+              .              .             .    .          .         .    .       .       .  				} 
+              .              .             .    .          .         .    .       .       .  			}
+              .              .             .    .          .         .    .       .       .  
+              .              .             .    .          .         .    .       .       .  		}
+              2              2             .    .          .         .    .       .       .  }
+              .              .             .    .          .         .    .       .       .  
+              .              .             .    .          .         .    .       .       .  int ComputeEdges (int image_in[N][M], int image_out[N][M])
+              4              0             3    1          0         0    1       .       .  {
+              .              .             .    .          .         .    .       .       .  	int maxdiff,val;
+              .              .             .    .          .         .    .       .       .  	int x,y,x_offset,y_offset;
+              1              0             1    .          .         .    .       .       .  	int max=0;
+              .              .             .    .          .         .    .       .       .  
+          6,436          2,145         2,145    1          0         0    1       .       .  	for (x=0; x< N; ++x)
+     13,798,784      4,598,880     4,598,880    .          .         .    .       .       .  		for (y=0; y<M; ++y) {
+      4,596,736              0     4,596,736    .          .         .    .       .       .  			maxdiff = 0;
+              .              .             .    .          .         .    .       .       .  
+     36,363,264     18,181,632             0    1          0         0    1       .       .  			if(x >= NB && x < N-NB && y >= NB && y < M-NB) {
+    459,436,032    151,658,496   151,658,496    .          .         .    .       .       .  				for (x_offset=-NB; x_offset <= NB; x_offset++)
+ 15,161,389,056  5,004,730,368 5,004,730,368    .          .         .    .       .       .  					for (y_offset=-NB; y_offset <= NB; y_offset++)
+140,941,606,594 58,326,972,257 9,715,064,832    1  9,339,264         0    1 286,666       .  						if ((val = abs(image_in[x+x_offset][y+y_offset]-image_in[x][y])) > maxdiff && !(x_offset == 0 && y_offset == 0))
+     72,284,260     36,142,130    36,142,130    .          .         .    .       .       .  							maxdiff = val;
+              .              .             .    .          .         .    .       .       .  			}
+              .              .             .    .          .         .    .       .       .  
+     41,370,624     18,386,944     4,596,736    1          0   287,296    1       0 287,296  			image_out[x][y] = maxdiff;
+     13,790,514      9,193,625           153    .          .         .    .       .       .  			if (maxdiff > max) max = maxdiff;
+              .              .             .    .          .         .    .       .       .  		}
+              .              .             .    .          .         .    .       .       .  
+              1              1             0    1          0         0    1       .       .  	return max;
+              2              2             .    .          .         .    .       .       .  }
+              .              .             .    .          .         .    .       .       .  
+              .              .             .    .          .         .    .       .       .  void DetectRoots (int image_in[N][M], int image_out[N][M], int max)
+              5              0             4    .          .         .    .       .       .  {
+              .              .             .    .          .         .    .       .       .  	int x,y,k,x_offset,y_offset;
+              .              .             .    .          .         .    .       .       .  	static int tmp[N][M];
+              .              .             .    .          .         .    .       .       .  
+          6,436          2,145         2,145    1          0         0    1       .       .  	for (x=0; x<N; ++x) {
+     13,798,784      4,598,880     4,598,880    1          0         0    1       .       .  		for (y=0; y<M; ++y) {
+     36,773,888     13,790,208     4,596,736    1          0   287,296    1       0 287,296  			image_out[x][y]=0;
+              .              .             .    .          .         .    .       .       .  
+     36,363,264     18,181,632             .    .          .         .    .       .       .  			if (x >= NB && x <= N-1-NB && y >= NB && y <= M-1-NB) {
+     35,684,352     13,381,632     4,460,544    1          0         0    1       .       .  				image_out[x][y] = 255;
+    459,436,032    151,658,496   151,658,496    .          .         .    .       .       .  				for (x_offset=-NB; x_offset <= NB; x_offset++) {
+ 15,161,389,056  5,004,730,368 5,004,730,368    .          .         .    .       .       .  					for (y_offset=-NB; y_offset <= NB; y_offset++) {
+109,441,538,712 49,863,236,940             0    1  9,339,264         0    1 287,296       .  						if ((image_in[x+x_offset][y+y_offset]) < (image_in[x][y]) && !(x_offset == 0 && y_offset == 0))
+ 10,023,636,400  3,758,863,650 1,252,954,550    .          .         .    .       .       .  							image_out[x][y] = 0;
+              .              .             .    .          .         .    .       .       .  					}
+              .              .             .    .          .         .    .       .       .  				}
+              .              .             .    .          .         .    .       .       .  			}
+              .              .             .    .          .         .    .       .       .  		}
+              .              .             .    .          .         .    .       .       .  	}
+              2              2             .    .          .         .    .       .       .  }
+              .              .             .    .          .         .    .       .       .  
+              .              .             .    .          .         .    .       .       .  int main(int argc, char* argv[])
+              5              0             3    1          0         0    1       .       .  {
+              .              .             .    .          .         .    .       .       .  	static int in_image[N][M];
+              .              .             .    .          .         .    .       .       .  	static int g_image[N][M];
+              .              .             .    .          .         .    .       .       .  	static int c_image[N][M];
+              .              .             .    .          .         .    .       .       .  	static int out_image[N][M];
+              .              .             .    .          .         .    .       .       .  	clock_t starttime, endtime;
+              .              .             .    .          .         .    .       .       .  	int max;
+              .              .             .    .          .         .    .       .       .  
+              9              3             3    .          .         .    .       .       .  	printf("  Reading image from disk (%s)...\n",IN_NAME);
+            775            244           101    0          7         0    0       7       .  => /build/buildd/glibc-2.19/elf/../sysdeps/x86_64/dl-trampoline.S:_dl_runtime_resolve (1x)
+          2,271            608           325   78         15        11   78       8       .  => /build/buildd/glibc-2.19/stdio-common/printf.c:printf (1x)
+              3              0             1    1          0         0    1       .       .  	read_image(IN_NAME,in_image);
+  2,882,180,020    644,051,663   474,305,981  303    108,275 4,597,431  297   1,031 287,343  => cav_det.c:read_image (1x)
+              .              .             .    .          .         .    .       .       .  
+              5              1             1    1          0         0    1       .       .  	printf("  Computing (GB=%d)...\n",GB);
+            866            193           130   49         11         9   49      10       9  => /build/buildd/glibc-2.19/stdio-common/printf.c:printf (1x)
+              7              3             4    0          0         1    0       0       1  	starttime=clock();
+            752            240           101    0          7         0    0       7       .  => /build/buildd/glibc-2.19/elf/../sysdeps/x86_64/dl-trampoline.S:_dl_runtime_resolve (1x)
+             31              8             2    5          2         0    5       2       .  => /build/buildd/glibc-2.19/time/../sysdeps/unix/sysv/linux/clock.c:clock (1x)
+              3              0             1    .          .         .    .       .       .  	GaussBlur(in_image, g_image);
+ 21,558,153,594  8,217,399,752 1,147,178,312   11 25,758,726 9,193,472   11 278,723 574,592  => cav_det.c:GaussBlur (1x)
+              4              0             2    1          0         1    1       0       1  	max = ComputeEdges(g_image, c_image);
+156,744,642,308 63,569,866,480 14,921,390,480    6  9,339,264   287,296    6 286,666 287,296  => cav_det.c:ComputeEdges (1x)
+              5              1             1    .          .         .    .       .       .  	DetectRoots(c_image, out_image, max);
+135,208,626,931 58,828,443,953 6,423,001,723    5  9,339,264   287,296    5 287,296 287,296  => cav_det.c:DetectRoots (1x)
+              3              1             2    0          1         1    0       1       1  	endtime=clock();
+             31              8             2    0          3         0    0       3       .  => /build/buildd/glibc-2.19/time/../sysdeps/unix/sysv/linux/clock.c:clock (1x)
+              .              .             .    .          .         .    .       .       .  
+              5              1             1    .          .         .    .       .       .  	printf("  Writing results to disk (%s)...\n",OUT_NAME);
+            906            202           126    6         19        14    6      19      14  => /build/buildd/glibc-2.19/stdio-common/printf.c:printf (1x)
+              .              .             .    .          .         .    .       .       .  	//  write_image(OUT_NAME1,g_image);
+              .              .             .    .          .         .    .       .       .  	//  write_image(OUT_NAME2,c_image);
+              3              0             1    1          0         0    1       .       .  	write_image(OUT_NAME,out_image);
+  3,092,514,678    737,626,473   556,944,052   84  4,603,203   149,696   84 285,419      83  => cav_det.c:write_image (1x)
+              .              .             .    .          .         .    .       .       .  
+              6              2             1    0          1         0    0       1       .  	printf("  Elapsed time (without disk reading & writing) is %f s\n",
+          4,003            958           608  124         19        14  124      19      13  => /build/buildd/glibc-2.19/stdio-common/printf.c:printf (1x)
+              4              2             0    0          1         0    0       1       .  			1.0*(endtime-starttime) / CLOCKS_PER_SEC);
+              .              .             .    .          .         .    .       .       .  	//getchar();
+              .              .             .    .          .         .    .       .       .  
+              1              .             .    .          .         .    .       .       .  	return 0;
+              2              2             .    .          .         .    .       .       .  }
+
+--------------------------------------------------------------------------------
+The following files chosen for auto-annotation could not be found:
+--------------------------------------------------------------------------------
+  /build/buildd/glibc-2.19/stdio-common/vfscanf.c
+  /build/buildd/glibc-2.19/stdio-common/vfprintf.c
+
+--------------------------------------------------------------------------------
+Ir Dr Dw I1mr D1mr D1mw ILmr DLmr DLmw 
+--------------------------------------------------------------------------------
+98 99 96    4  100   99    4  100  100  percentage of events annotated
+
